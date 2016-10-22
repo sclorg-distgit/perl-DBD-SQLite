@@ -2,7 +2,7 @@
 
 Name:           %{?scl_prefix}perl-DBD-SQLite
 Version:        1.50
-Release:        5%{?dist}
+Release:        4%{?dist}
 Summary:        SQLite DBI Driver
 Group:          Development/Libraries
 License:        (GPL+ or Artistic) and Public Domain
@@ -17,8 +17,6 @@ Patch2:         DBD-SQLite-1.50-two-arg-fts3_tokenizer-is-disabled-by-default-fo
 Patch3:         DBD-SQLite-1.50-register-perl-tokenizer-only-if-DBD-SQLite-is-compil.patch
 # Adjust to sqlite-3.11.0, bug #1309675, in upstream after 1.50
 Patch4:         DBD-SQLite-1.50-see-if-SQLITE_ENABLE_FTS3_TOKENIZER-environmental-va.patch
-# Enable perl FTS3 tokenizer with sqlite older than 3.11.0, CPAN RT#112474
-Patch5:         DBD-SQLite-1.51_05-Always-register-perl-FTS3-tokenizer-with-sqlite-befo.patch
 # if sqlite >= 3.1.3 then
 #   perl-DBD-SQLite uses the external library
 # else
@@ -76,7 +74,6 @@ libraries.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p1
-%patch5 -p1
 # Remove bundled sqlite libraries (BZ#1059154)
 # System libraries will be used
 rm sqlite*
@@ -101,9 +98,6 @@ find %{buildroot} -type f \( -name .packlist -o \
 %{_mandir}/man3/*.3pm*
 
 %changelog
-* Sun Jul 24 2016 Petr Pisar <ppisar@redhat.com> - 1.50-5
-- Enable perl FTS3 tokenizer with sqlite older than 3.11.0 (CPAN RT#112474)
-
 * Tue Jul 12 2016 Petr Pisar <ppisar@redhat.com> - 1.50-4
 - SCL
 
