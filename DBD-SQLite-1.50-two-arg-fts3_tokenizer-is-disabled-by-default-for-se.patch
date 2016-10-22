@@ -1,0 +1,32 @@
+From abed684c431beab32d20da69e344bf3075102a1e Mon Sep 17 00:00:00 2001
+From: Kenichi Ishigaki <ishigaki@cpan.org>
+Date: Tue, 16 Feb 2016 11:55:27 +0900
+Subject: [PATCH] two-arg fts3_tokenizer() is disabled by default for security
+ concerns as of SQLite 3.11.0, unless DBD::SQLite is compiled with
+ -DSQLITE_ENABLE_FTS3_TOKENIZER
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Petr Písař <ppisar@redhat.com>
+---
+ t/43_fts3.t | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/t/43_fts3.t b/t/43_fts3.t
+index 7af6c2e..64910ee 100644
+--- a/t/43_fts3.t
++++ b/t/43_fts3.t
+@@ -33,6 +33,9 @@ BEGIN {
+ 	if (!grep /ENABLE_FTS3/, DBD::SQLite::compile_options()) {
+ 		plan skip_all => 'FTS3 is disabled for this DBD::SQLite';
+ 	}
++	if ($DBD::SQLite::sqlite_version_number >= 3011000 and !grep /ENABLE_FTS3_TOKENIZER/, DBD::SQLite::compile_options()) {
++		plan skip_all => 'FTS3 tokenizer is disabled for this DBD::SQLite';
++	}
+ }
+ use Test::NoWarnings;
+ 
+-- 
+2.5.0
+

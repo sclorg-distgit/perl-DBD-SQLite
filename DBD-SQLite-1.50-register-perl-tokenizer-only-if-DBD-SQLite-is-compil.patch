@@ -1,0 +1,57 @@
+From f6981127673b56265254b2891ac1539e036fe321 Mon Sep 17 00:00:00 2001
+From: Kenichi Ishigaki <ishigaki@cpan.org>
+Date: Tue, 16 Feb 2016 12:55:38 +0900
+Subject: [PATCH] register perl tokenizer only if DBD::SQLite is compiled with
+ -DSQLITE_ENABLE_FTS3_TOKENIZER
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Petr Písař: Ported to 1.50.
+
+Signed-off-by: Petr Písař <ppisar@redhat.com>
+---
+ SQLite.xs | 4 ++++
+ dbdimp.c  | 3 ++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/SQLite.xs b/SQLite.xs
+index 5b51aef..f20e511 100644
+--- a/SQLite.xs
++++ b/SQLite.xs
+@@ -288,7 +288,11 @@ register_fts3_perl_tokenizer(dbh)
+     ALIAS:
+         DBD::SQLite::db::sqlite_register_fts3_perl_tokenizer = 1
+     CODE:
++#if SQLITE_ENABLE_FTS3_TOKENIZER
+         RETVAL = sqlite_db_register_fts3_perl_tokenizer(aTHX_ dbh);
++#else
++        RETVAL = 0;
++#endif
+     OUTPUT:
+         RETVAL
+ 
+diff --git a/dbdimp.c b/dbdimp.c
+index 6a6924b..b36bc67 100644
+--- a/dbdimp.c
++++ b/dbdimp.c
+@@ -2623,6 +2623,7 @@ sqlite_db_backup_to_file(pTHX_ SV *dbh, char *filename)
+ #endif
+ }
+ 
++#if SQLITE_VERSION_NUMBER < 3011000 || SQLITE_ENABLE_FTS3_TOKENIZER
+ typedef struct perl_tokenizer {
+     sqlite3_tokenizer base;
+     SV *coderef;                 /* the perl tokenizer is a coderef that takes
+@@ -2912,7 +2913,7 @@ int sqlite_db_register_fts3_perl_tokenizer(pTHX_ SV *dbh)
+ 
+     return sqlite3_finalize(pStmt);
+ }
+-
++#endif
+ 
+ 
+ /*********************************************************************** 
+-- 
+2.5.0
+
