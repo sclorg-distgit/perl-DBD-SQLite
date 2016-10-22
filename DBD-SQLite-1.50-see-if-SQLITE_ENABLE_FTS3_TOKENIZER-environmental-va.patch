@@ -1,0 +1,33 @@
+From 58ba45f1797370e220eb627e6b7aec1d567db257 Mon Sep 17 00:00:00 2001
+From: Kenichi Ishigaki <ishigaki@cpan.org>
+Date: Tue, 16 Feb 2016 13:06:51 +0900
+Subject: [PATCH] see if SQLITE_ENABLE_FTS3_TOKENIZER environmental variable is
+ set, for those who do need perl tokenizer
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Petr Písař <ppisar@redhat.com>
+---
+ Makefile.PL | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Makefile.PL b/Makefile.PL
+index db5ddb5..dde27d9 100644
+--- a/Makefile.PL
++++ b/Makefile.PL
+@@ -230,6 +230,11 @@ my @CC_DEFINE = (
+ 	'-DNDEBUG=1',
+ );
+ 
++# for upstream security concern, this should be set only if requested
++if ($ENV{SQLITE_ENABLE_FTS3_TOKENIZER}) {
++	push @CC_DEFINE, '-DSQLITE_ENABLE_FTS3_TOKENIZER'; # for sqlite >= 3.11.0
++}
++
+ if (DEVELOPER_ONLY) {
+ 	# for sqlite >= 3.8.8
+ 	push @CC_DEFINE, '-DSQLITE_ENABLE_API_ARMOR';
+-- 
+2.5.0
+
