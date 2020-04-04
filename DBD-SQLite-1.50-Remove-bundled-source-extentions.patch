@@ -57,7 +57,7 @@ diff --git a/lib/DBD/SQLite.pm b/lib/DBD/SQLite.pm
 index d03aeb5..60b74a7 100644
 --- a/lib/DBD/SQLite.pm
 +++ b/lib/DBD/SQLite.pm
-@@ -2494,37 +2494,6 @@ sources, etc.
+@@ -2570,37 +2570,6 @@ sources, etc.
  
  Other Perl virtual tables may also be published separately on CPAN.
  

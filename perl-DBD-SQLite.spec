@@ -9,7 +9,7 @@
 
 Name:           %{?scl_prefix}perl-DBD-SQLite
 Version:        1.60
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        SQLite DBI Driver
 # lib/DBD/SQLite.pm:        GPL+ or Artistic
 # LICENSE:                  GPL+ or Artistic
@@ -118,6 +118,9 @@ find %{buildroot} -type f  -name '*.bs' -size 0 -delete
 %{_mandir}/man3/*.3pm*
 
 %changelog
+* Wed Jan 15 2020 Jitka Plesnikova <jplesnik@redhat.com> - 1.60-3
+- Updated to prevent patch leftovers
+
 * Fri Jan 03 2020 Jitka Plesnikova <jplesnik@redhat.com> - 1.60-2
 - SCL
 
